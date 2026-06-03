@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyecto Reboot 💻 Repotenciación</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:    #0eb5a8;
+  --teal-l:  #13d4c5;
+  --orange:  #ff6b35;
+  --orange-l:#ff8c5a;
+  --yellow:  #ffd166;
+  --purple:  #845ec2;
+  --purple-l:#a07cd4;
+  --pink:    #ff6b9d;
+  --green:   #06d6a0;
+  --bg:      #f7f3ee;
+  --bg2:     #fefcf9;
+  --card:    #ffffff;
+  --text:    #2d2d2d;
+  --muted:   #8a8580;
+  --border:  #e8e2da;
+  --shadow:  rgba(0,0,0,0.08);
+  --r:       'Nunito', sans-serif;
+  --d:       'Fraunces', serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background:var(--bg); color:var(--text); font-family:var(--r); overflow-x:hidden; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--teal); border-radius:99px; }
+
+/* ── FLOATING SHAPES BACKGROUND ── */
+.bg-shapes { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.shape {
+  position:absolute; border-radius:50%; opacity:0.07;
+  animation: floatShape 8s ease-in-out infinite;
+}
+.shape:nth-child(1) { width:300px;height:300px;background:var(--teal);top:-80px;right:-60px;animation-delay:0s; }
+.shape:nth-child(2) { width:200px;height:200px;background:var(--orange);bottom:10%;left:-60px;animation-delay:2s; }
+.shape:nth-child(3) { width:150px;height:150px;background:var(--purple);top:40%;right:5%;animation-delay:4s; }
+.shape:nth-child(4) { width:100px;height:100px;background:var(--yellow);top:60%;left:10%;animation-delay:1s; }
+@keyframes floatShape {
+  0%,100% { transform:translateY(0) rotate(0deg); }
+  50% { transform:translateY(-30px) rotate(10deg); }
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed;top:0;width:100%;z-index:100;
+  background:rgba(247,243,238,0.92);
+  backdrop-filter:blur(16px);
+  border-bottom:2px solid var(--border);
+  padding:14px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo {
+  font-family:var(--d);font-size:22px;font-weight:900;color:var(--text);
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo .dot {
+  width:10px;height:10px;background:var(--teal);border-radius:50%;
+  display:inline-block;animation:blink 1.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.7)} }
+.nav-links { display:flex;gap:8px;list-style:none; }
+.nav-links a {
+  font-size:14px;font-weight:700;padding:8px 16px;border-radius:99px;
+  text-decoration:none;color:var(--muted);transition:all 0.2s;
+}
+.nav-links a:hover { background:var(--teal);color:#fff; }
+.nav-badge {
+  background:var(--orange);color:#fff;
+  font-size:12px;font-weight:800;
+  padding:8px 18px;border-radius:99px;letter-spacing:0.5px;
+}
+
+/* ── HERO ── */
+#hero {
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:flex-start;
+  padding:120px 64px 80px;position:relative;
+}
+
+.hero-blob {
+  position:absolute;top:-100px;right:-200px;width:700px;height:700px;
+  background:radial-gradient(circle at 40% 40%, rgba(14,181,168,0.18) 0%, rgba(255,107,53,0.1) 50%, transparent 75%);
+  border-radius:50%;pointer-events:none;z-index:0;
+  animation:blobPulse 6s ease-in-out infinite;
+}
+@keyframes blobPulse {
+  0%,100%{transform:scale(1) rotate(0deg)}
+  50%{transform:scale(1.05) rotate(3deg)}
+}
+
+.hero-chip {
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(14,181,168,0.12);border:2px solid rgba(14,181,168,0.3);
+  color:var(--teal);font-weight:800;font-size:13px;
+  padding:8px 18px;border-radius:99px;margin-bottom:28px;
+  animation:fadeUp 0.7s ease both;
+}
+.hero-chip::before { content:'🎓'; }
+
+.hero-title {
+  font-family:var(--d);font-size:clamp(52px,8vw,100px);font-weight:900;
+  line-height:1;color:var(--text);margin-bottom:16px;
+  animation:fadeUp 0.7s 0.1s ease both;
+  position:relative;z-index:1;
+}
+.hero-title .highlight {
+  position:relative;display:inline-block;color:var(--teal);
+}
+.hero-title .highlight::after {
+  content:'';position:absolute;bottom:-4px;left:0;right:0;height:6px;
+  background:var(--yellow);border-radius:99px;z-index:-1;
+  transform:scaleX(0);transform-origin:left;
+  animation:underlineIn 0.8s 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+@keyframes underlineIn { to{transform:scaleX(1)} }
+
+.hero-desc {
+  font-size:18px;font-weight:600;color:var(--muted);max-width:540px;
+  line-height:1.7;margin-bottom:40px;position:relative;z-index:1;
+  animation:fadeUp 0.7s 0.2s ease both;
+}
+
+.hero-buttons {
+  display:flex;gap:14px;flex-wrap:wrap;
+  animation:fadeUp 0.7s 0.3s ease both;position:relative;z-index:1;
+}
+.btn {
+  font-family:var(--r);font-size:15px;font-weight:800;
+  padding:14px 28px;border-radius:16px;border:none;
+  cursor:pointer;text-decoration:none;display:inline-flex;
+  align-items:center;gap:8px;transition:all 0.25s;
+}
+.btn-main { background:var(--teal);color:#fff;box-shadow:0 8px 24px rgba(14,181,168,0.35); }
+.btn-main:hover { transform:translateY(-3px);box-shadow:0 14px 32px rgba(14,181,168,0.45); }
+.btn-sec { background:var(--card);color:var(--text);box-shadow:0 4px 16px var(--shadow);border:2px solid var(--border); }
+.btn-sec:hover { transform:translateY(-3px);border-color:var(--teal);color:var(--teal); }
+
+/* Hero stats */
+.hero-cards {
+  display:flex;gap:16px;flex-wrap:wrap;margin-top:56px;
+  animation:fadeUp 0.7s 0.4s ease both;position:relative;z-index:1;
+}
+.hero-mini-card {
+  background:var(--card);border-radius:20px;padding:20px 24px;
+  box-shadow:0 4px 20px var(--shadow);border:2px solid var(--border);
+  display:flex;align-items:center;gap:14px;transition:transform 0.2s;
+}
+.hero-mini-card:hover { transform:translateY(-4px); }
+.mini-icon {
+  width:44px;height:44px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  flex-shrink:0;
+}
+.mini-text-top { font-size:17px;font-weight:900;color:var(--text); }
+.mini-text-bot { font-size:12px;font-weight:600;color:var(--muted); }
+
+/* ── SECTION SHARED ── */
+.section {
+  padding:96px 64px;position:relative;z-index:1;
+}
+.section-tag {
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:800;padding:6px 16px;
+  border-radius:99px;margin-bottom:16px;
+}
+.section-title {
+  font-family:var(--d);font-size:clamp(32px,4vw,52px);
+  font-weight:900;color:var(--text);line-height:1.1;
+  margin-bottom:48px;
+}
+.section-title em { font-style:italic;color:var(--teal); }
+
+/* ── DIAGNÓSTICO ── */
+#diagnostico { background:var(--bg2); }
+
+.diag-grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+
+.diag-card {
+  background:var(--card);border-radius:24px;padding:32px;
+  border:2px solid var(--border);box-shadow:0 4px 20px var(--shadow);
+  position:relative;overflow:hidden;transition:all 0.3s;
+}
+.diag-card:hover { transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.12); }
+
+.diag-card .card-accent {
+  position:absolute;top:0;right:0;width:80px;height:80px;
+  border-radius:0 24px 0 80px;opacity:0.12;
+}
+
+.diag-emoji { font-size:36px;margin-bottom:16px;display:block; }
+
+.diag-card h3 {
+  font-family:var(--d);font-size:22px;font-weight:900;
+  color:var(--text);margin-bottom:10px;
+}
+.diag-card p { font-size:15px;line-height:1.7;color:var(--muted); }
+
+.ba-row {
+  display:flex;align-items:center;gap:10px;margin-top:20px;flex-wrap:wrap;
+}
+.ba-pill {
+  font-size:13px;font-weight:700;padding:6px 14px;border-radius:99px;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.ba-pill.old { background:rgba(0,0,0,0.06);color:var(--muted);text-decoration:line-through; }
+.ba-pill.new { color:#fff; }
+.ba-arrow { font-size:18px;color:var(--muted); }
+
+/* ── PROCESO ── */
+#proceso { background:var(--bg); }
+
+.steps-grid {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.step-card {
+  background:var(--card);border-radius:24px;padding:32px 28px;
+  border:2px solid var(--border);box-shadow:0 4px 20px var(--shadow);
+  position:relative;transition:all 0.3s;cursor:default;
+}
+.step-card:hover { transform:translateY(-6px); }
+
+.step-num {
+  font-family:var(--d);font-size:48px;font-weight:900;
+  opacity:0.08;position:absolute;top:16px;right:20px;line-height:1;
+}
+.step-icon-wrap {
+  width:52px;height:52px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;margin-bottom:18px;
+}
+.step-card h3 {
+  font-family:var(--d);font-size:19px;font-weight:900;
+  color:var(--text);margin-bottom:10px;
+}
+.step-card p { font-size:14px;line-height:1.7;color:var(--muted); }
+
+.step-tag {
+  display:inline-flex;margin-top:16px;font-size:12px;
+  font-weight:800;padding:5px 12px;border-radius:99px;
+}
+
+/* ── EVIDENCIAS ── */
+#evidencias { background:var(--bg2); }
+
+.evidencias-desc {
+  font-size:16px;font-weight:600;color:var(--muted);
+  max-width:580px;margin-bottom:48px;line-height:1.7;
+}
+
+.gallery-grid {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+
+.gallery-item {
+  background:var(--card);border-radius:20px;
+  border:2px dashed var(--border);
+  aspect-ratio:4/3;position:relative;overflow:hidden;
+  cursor:pointer;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  transition:all 0.3s;
+}
+.gallery-item:hover {
+  border-color:var(--teal);
+  box-shadow:0 8px 32px rgba(14,181,168,0.15);
+  transform:translateY(-4px);
+}
+.gallery-item.has-image { border-style:solid;border-color:var(--border); }
+
+.upload-zone {
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  pointer-events:none;padding:20px;
+}
+.upload-emoji { font-size:32px; }
+.upload-text {
+  font-size:13px;font-weight:700;color:var(--muted);
+  text-align:center;line-height:1.4;
+}
+.gallery-item input[type="file"] {
+  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
+}
+.gallery-item img {
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:none;
+}
+.gallery-item .img-caption {
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,0.7));
+  padding:24px 14px 12px;
+  font-size:12px;font-weight:700;color:#fff;
+  display:none;text-align:center;
+}
+.gallery-item.has-image .upload-zone { display:none; }
+.gallery-item.has-image img { display:block; }
+.gallery-item.has-image .img-caption { display:block; }
+.gallery-item.has-image input { z-index:10; }
+
+/* ── RESULTADOS ── */
+#resultados { background:var(--bg); }
+
+.results-container {
+  display:grid;grid-template-columns:1fr 1.2fr;gap:20px;
+}
+
+.result-feature {
+  background:linear-gradient(135deg,#0eb5a8,#13d4c5);
+  border-radius:28px;padding:40px;color:#fff;
+  display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:0 16px 48px rgba(14,181,168,0.35);
+  position:relative;overflow:hidden;
+}
+.result-feature::before {
+  content:'🚀';font-size:120px;
+  position:absolute;bottom:-20px;right:-20px;opacity:0.15;
+  line-height:1;pointer-events:none;
+}
+.result-feature h3 {
+  font-family:var(--d);font-size:28px;font-weight:900;
+  margin-bottom:12px;
+}
+.result-feature p { font-size:15px;line-height:1.7;opacity:0.85; }
+
+.meter-list { display:flex;flex-direction:column;gap:16px;margin-top:28px; }
+.meter-item {}
+.meter-top {
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;
+}
+.meter-label { font-size:13px;font-weight:800;opacity:0.9; }
+.meter-pct { font-size:13px;font-weight:900;opacity:0.95; }
+.meter-track {
+  height:10px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;
+}
+.meter-fill {
+  height:100%;background:#fff;border-radius:99px;width:0;
+  transition:width 1.5s cubic-bezier(0.16,1,0.3,1);
+  box-shadow:0 0 12px rgba(255,255,255,0.5);
+}
+
+.result-cards-col { display:flex;flex-direction:column;gap:16px; }
+
+.result-card {
+  background:var(--card);border-radius:24px;padding:28px;
+  border:2px solid var(--border);box-shadow:0 4px 20px var(--shadow);
+  display:flex;gap:20px;align-items:flex-start;transition:all 0.3s;
+}
+.result-card:hover { transform:translateY(-4px); }
+.result-icon {
+  width:52px;height:52px;border-radius:16px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+}
+.result-card h4 {
+  font-family:var(--d);font-size:18px;font-weight:900;
+  color:var(--text);margin-bottom:6px;
+}
+.result-card p { font-size:14px;line-height:1.6;color:var(--muted); }
+
+/* ── EQUIPO ── */
+#equipo { background:var(--bg2); }
+
+.team-flex {
+  display:flex;flex-wrap:wrap;gap:16px;
+}
+
+.team-card {
+  background:var(--card);border-radius:24px;padding:28px 24px;
+  border:2px solid var(--border);box-shadow:0 4px 20px var(--shadow);
+  display:flex;flex-direction:column;align-items:center;
+  gap:12px;text-align:center;min-width:170px;flex:1;
+  transition:all 0.3s;cursor:default;
+}
+.team-card:hover { transform:translateY(-6px); }
+
+.team-avatar {
+  width:64px;height:64px;border-radius:20px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--d);font-size:26px;font-weight:900;color:#fff;
+}
+.team-name { font-family:var(--d);font-size:17px;font-weight:900;color:var(--text); }
+.team-role { font-size:13px;font-weight:700;color:var(--muted);line-height:1.4; }
+
+.school-box {
+  margin-top:40px;background:var(--card);
+  border-radius:24px;padding:32px;
+  border:2px solid var(--border);
+  display:flex;align-items:center;gap:20px;
+}
+.school-icon { font-size:40px; }
+.school-name {
+  font-family:var(--d);font-size:24px;font-weight:900;color:var(--text);
+}
+.school-year { font-size:15px;font-weight:700;color:var(--muted); }
+
+/* ── FOOTER ── */
+footer {
+  background:var(--text);color:#fff;
+  padding:56px 64px;position:relative;overflow:hidden;z-index:1;
+}
+footer::before {
+  content:'💻';font-size:200px;
+  position:absolute;right:-20px;bottom:-40px;
+  opacity:0.04;line-height:1;pointer-events:none;
+}
+.footer-logo { font-family:var(--d);font-size:28px;font-weight:900;margin-bottom:10px; }
+.footer-logo span { color:var(--teal); }
+.footer-copy { font-size:14px;font-weight:600;opacity:0.5;line-height:1.8; }
+.footer-bottom {
+  margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;font-weight:700;opacity:0.4;
+}
+.footer-pills { display:flex;gap:10px; }
+.footer-pill {
+  background:rgba(255,255,255,0.08);padding:6px 14px;
+  border-radius:99px;font-size:12px;font-weight:700;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from{opacity:0;transform:translateY(28px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.reveal {
+  opacity:0;transform:translateY(32px);
+  transition:opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible { opacity:1;transform:translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ── INTERACTIVE TOOLTIP ── */
+.tooltip-wrap { position:relative;display:inline-block; }
+.tooltip-wrap:hover .tooltip-box { opacity:1;transform:translateY(-4px); }
+.tooltip-box {
+  position:absolute;bottom:calc(100% + 8px);left:50%;
+  transform:translateX(-50%) translateY(0);
+  background:var(--text);color:#fff;font-size:12px;font-weight:700;
+  padding:8px 14px;border-radius:10px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:all 0.2s;z-index:10;
+}
+.tooltip-box::after {
+  content:'';position:absolute;top:100%;left:50%;
+  transform:translateX(-50%);border:5px solid transparent;
+  border-top-color:var(--text);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px) {
+  nav { padding:14px 24px; }
+  .nav-links { display:none; }
+  .section, #hero { padding:72px 24px; }
+  .diag-grid, .steps-grid, .results-container { grid-template-columns:1fr; }
+  .gallery-grid { grid-template-columns:1fr 1fr; }
+  .hero-cards { gap:10px; }
+  .school-icon image { width:32px;height:32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- BG SHAPES -->
+<div class="bg-shapes">
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Reboot <span class="dot"></span></div>
+  <ul class="nav-links">
+    <li><a href="#diagnostico">Diagnóstico</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#evidencias">Evidencias</a></li>
+    <li><a href="#resultados">Resultados</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+  </ul>
+  <div class="nav-badge">🎓 3ro Bachillerato</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-blob"></div>
+
+  <div class="hero-chip">Proyecto de Grado — 2025</div>
+
+  <h1 class="hero-title">
+    Dándole<br>
+    <span class="highlight">nueva vida</span><br>
+    a una PC 💻
+  </h1>
+
+  <p class="hero-desc">
+    Repotenciamos un equipo de cómputo cambiando el disco duro por un SSD, ampliando la RAM, optimizando Windows e instalando Microsoft Office. ¡Mira cómo lo hicimos!
+  </p>
+
+  <div class="hero-buttons">
+    <a href="#proceso" class="btn btn-main">Ver el proceso 🔧</a>
+    <a href="#evidencias" class="btn btn-sec">Nuestras fotos 📸</a>
+  </div>
+
+  <div class="hero-cards">
+    <div class="hero-mini-card tooltip-wrap">
+      <div class="mini-icon" style="background:rgba(14,181,168,0.12)">💾</div>
+      <div>
+        <div class="mini-text-top">HDD → SSD</div>
+        <div class="mini-text-bot">Almacenamiento</div>
+      </div>
+      <div class="tooltip-box">¡Hasta 5× más rápido!</div>
+    </div>
+    <div class="hero-mini-card tooltip-wrap">
+      <div class="mini-icon" style="background:rgba(255,107,53,0.12)">🧠</div>
+      <div>
+        <div class="mini-text-top">+1 GB RAM</div>
+        <div class="mini-text-bot">DDR3 Adicional</div>
+      </div>
+      <div class="tooltip-box">Más memoria = más fluidez</div>
+    </div>
+    <div class="hero-mini-card tooltip-wrap">
+      <div class="mini-icon" style="background:rgba(132,94,194,0.12)">⚙️</div>
+      <div>
+        <div class="mini-text-top">Windows</div>
+        <div class="mini-text-bot">Optimizado</div>
+      </div>
+      <div class="tooltip-box">Limpieza y configuración</div>
+    </div>
+    <div class="hero-mini-card tooltip-wrap">
+      <div class="mini-icon" style="background:rgba(6,214,160,0.12)">📄</div>
+      <div>
+        <div class="mini-text-top">MS Office</div>
+        <div class="mini-text-bot">Instalado</div>
+      </div>
+      <div class="tooltip-box">Word, Excel, PowerPoint</div>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNÓSTICO -->
+<section id="diagnostico" class="section">
+  <div class="section-tag reveal" style="background:rgba(14,181,168,0.12);color:var(--teal)">🔍 Análisis inicial</div>
+  <h2 class="section-title reveal">¿Qué encontramos<br>al <em>principio</em>?</h2>
+
+  <div class="diag-grid">
+    <div class="diag-card reveal reveal-delay-1">
+      <div class="card-accent" style="background:var(--teal)"></div>
+      <span class="diag-emoji">💽</span>
+      <h3>Disco Duro HDD</h3>
+      <p>El equipo tenía un disco duro mecánico con tiempos de carga muy altos, haciendo que Windows tardara mucho en arrancar y que los programas abrieran con lentitud.</p>
+      <div class="ba-row">
+        <span class="ba-pill old">HDD Mecánico</span>
+        <span class="ba-arrow">→</span>
+        <span class="ba-pill new" style="background:var(--teal)">✓ SSD SATA</span>
+      </div>
+    </div>
+
+    <div class="diag-card reveal reveal-delay-2">
+      <div class="card-accent" style="background:var(--orange)"></div>
+      <span class="diag-emoji">🧠</span>
+      <h3>Memoria RAM DDR3</h3>
+      <p>La memoria RAM disponible era insuficiente para correr aplicaciones modernas. Con el navegador y Word abiertos al mismo tiempo, el equipo se ponía lento o se colgaba.</p>
+      <div class="ba-row">
+        <span class="ba-pill old">RAM Limitada</span>
+        <span class="ba-arrow">→</span>
+        <span class="ba-pill new" style="background:var(--orange)">✓ +1 GB DDR3</span>
+      </div>
+    </div>
+
+    <div class="diag-card reveal reveal-delay-1">
+      <div class="card-accent" style="background:var(--purple)"></div>
+      <span class="diag-emoji">⚙️</span>
+      <h3>Windows Sin Optimizar</h3>
+      <p>El sistema operativo tenía procesos innecesarios corriendo de fondo, archivos temporales acumulados y configuraciones que quitaban rendimiento al equipo.</p>
+      <div class="ba-row">
+        <span class="ba-pill old">Desconfigurado</span>
+        <span class="ba-arrow">→</span>
+        <span class="ba-pill new" style="background:var(--purple)">✓ Optimizado</span>
+      </div>
+    </div>
+
+    <div class="diag-card reveal reveal-delay-2">
+      <div class="card-accent" style="background:var(--green)"></div>
+      <span class="diag-emoji">📄</span>
+      <h3>Software de Oficina desactualizado</h3>
+      <p>El equipo no contaba con herramientas de productividad modernas. Era necesario instalar un paquete de ofimática mas moderno para poder usarlo en tareas académicas y laborales.</p>
+      <div class="ba-row">
+        <span class="ba-pill old">Office Obsoleto</span>
+        <span class="ba-arrow">→</span>
+        <span class="ba-pill new" style="background:var(--green)">✓ MS Office Actualizado</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso" class="section">
+  <div class="section-tag reveal" style="background:rgba(255,107,53,0.12);color:var(--orange)">🔧 Paso a paso</div>
+  <h2 class="section-title reveal">¿Cómo lo<br><em>hicimos</em>?</h2>
+
+  <div class="steps-grid" id="stepsGrid"></div>
+</section>
+
+<!-- EVIDENCIAS -->
+<section id="evidencias" class="section">
+  <div class="section-tag reveal" style="background:rgba(132,94,194,0.12);color:var(--purple)">📸 Fotos del proyecto</div>
+  <h2 class="section-title reveal">Nuestras<br><em>evidencias</em></h2>
+  <p class="evidencias-desc reveal">Haz clic en cada recuadro para subir las fotos de tu proyecto. ¡Muéstrale al mundo todo el trabajo que hicieron!</p>
+
+  <div class="gallery-grid reveal" id="galleryGrid">
+  <div class="gallery-item has-image">
+    <img src="imagenes/11.jpeg" alt="Evidencia 1">
+    <div class="img-caption">Evidencia 1</div>
+    <input type="file" accept="image/*">
+  </div>
+  
+  <div class="gallery-item has-image">
+    <img src="imagenes/04.jpeg" alt="Evidencia 2">
+    <div class="img-caption">Evidencia 2</div>
+    <input type="file" accept="image/*">
+  </div>
+
+    <div class="gallery-item has-image">
+    <img src="imagenes/14.jpeg" alt="Evidencia 3">
+    <div class="img-caption">Evidencia 3</div>
+    <input type="file" accept="image/*">
+  </div>
+
+    <div class="gallery-item has-image">
+    <img src="imagenes/09.jpeg" alt="Evidencia 4">
+    <div class="img-caption">Evidencia 4</div>
+    <input type="file" accept="image/*">
+  </div>
+
+    <div class="gallery-item has-image">
+    <img src="imagenes/16.jpeg" alt="Evidencia 5">
+    <div class="img-caption">Evidencia 5</div>
+    <input type="file" accept="image/*">
+  </div>
+
+    <div class="gallery-item has-image">
+    <img src="imagenes/08.jpeg" alt="Evidencia 6">
+    <div class="img-caption">Evidencia 6</div>
+    <input type="file" accept="image/*">
+  </div>
+
+    <div class="gallery-item has-image">
+    <img src="imagenes/06.jpeg" alt="Evidencia 7">
+    <div class="img-caption">Evidencia 7</div>
+    <input type="file" accept="image/*">
+  </div>
+
+    <div class="gallery-item has-image">
+    <img src="imagenes/07.jpeg" alt="Evidencia 8">
+    <div class="img-caption">Evidencia 8</div>
+    <input type="file" accept="image/*">
+  </div>
+
+    <div class="gallery-item has-image">
+    <img src="imagenes/01.jpeg" alt="Evidencia 9">
+    <div class="img-caption">Evidencia 9</div>
+    <input type="file" accept="image/*">
+  </div>
+  
+  <!-- Repite para más imágenes -->
+</div>
+</section>
+
+<!-- RESULTADOS -->
+<section id="resultados" class="section">
+  <div class="section-tag reveal" style="background:rgba(6,214,160,0.12);color:var(--green)">📊 Comparativa</div>
+  <h2 class="section-title reveal">Los resultados<br><em>hablan solos</em></h2>
+
+  <div class="results-container">
+    <div class="result-feature reveal">
+      <div>
+        <h3>Mejora Total del Sistema</h3>
+        <p>La combinación de SSD + más RAM + optimización de Windows logró una transformación increíble en el rendimiento del equipo.</p>
+      </div>
+      <div class="meter-list">
+        <div class="meter-item">
+          <div class="meter-top"><span class="meter-label">⚡ Velocidad de arranque</span><span class="meter-pct">+88%</span></div>
+          <div class="meter-track"><div class="meter-fill" data-w="88%"></div></div>
+        </div>
+        <div class="meter-item">
+          <div class="meter-top"><span class="meter-label">📂 Apertura de apps</span><span class="meter-pct">+75%</span></div>
+          <div class="meter-track"><div class="meter-fill" data-w="75%"></div></div>
+        </div>
+        <div class="meter-item">
+          <div class="meter-top"><span class="meter-label">🔄 Multitarea</span><span class="meter-pct">+65%</span></div>
+          <div class="meter-track"><div class="meter-fill" data-w="65%"></div></div>
+        </div>
+        <div class="meter-item">
+          <div class="meter-top"><span class="meter-label">🧹 Limpieza del sistema</span><span class="meter-pct">+90%</span></div>
+          <div class="meter-track"><div class="meter-fill" data-w="90%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-cards-col reveal reveal-delay-1">
+      <div class="result-card">
+        <div class="result-icon" style="background:rgba(14,181,168,0.12)">💾</div>
+        <div>
+          <h4>SSD vs HDD</h4>
+          <p>El SSD no tiene partes móviles, es silencioso, más resistente a golpes y hasta 5 veces más rápido que el HDD original en lectura de datos.</p>
+        </div>
+      </div>
+      <div class="result-card">
+        <div class="result-icon" style="background:rgba(255,107,53,0.12)">🧠</div>
+        <div>
+          <h4>RAM Ampliada</h4>
+          <p>Con el nuevo módulo DDR3 el sistema puede manejar más programas abiertos al mismo tiempo sin que se sienta pesado ni lento.</p>
+        </div>
+      </div>
+      <div class="result-card">
+        <div class="result-icon" style="background:rgba(132,94,194,0.12)">⚙️</div>
+        <div>
+          <h4>Windows Optimizado</h4>
+          <p>Se desactivaron programas de inicio innecesarios, se limpiaron archivos basura y se ajustó la configuración para máximo rendimiento.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPO -->
+<section id="equipo" class="section">
+  <div class="section-tag reveal" style="background:rgba(255,107,53,0.12);color:var(--orange)">👥 Los que hicieron esto posible</div>
+  <h2 class="section-title reveal">Nuestro<br><em>equipo</em></h2>
+
+  <div class="team-flex reveal" id="teamGrid"></div>
+
+  <div class="school-box reveal" style="margin-top:40px">
+    <span class="school-icon"><img src="https://th.bing.com/th/id/OIP.uxVoW4mHxNDSOv75pJLvbgAAAA?w=172&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="Icono de la escuela"></span>
+    <div>
+      <div class="school-name">UE Juan de Velasco</div>
+      <div class="school-year">3° Bachillerato — Año Lectivo 2025–2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Reboot <span>PC</span> ✨</div>
+  <div class="footer-copy">
+    Proyecto de Grado — 3ro de Bachillerato<br>
+    Repotenciación de Equipo de Cómputo
+  </div>
+  <div class="footer-bottom">
+    <span>Hecho con 💙 por el equipo: Anthony Simbaña, Paola Taday y Johana Taday</span>
+    <div class="footer-pills">
+      <span class="footer-pill">SSD</span>
+      <span class="footer-pill">RAM DDR3</span>
+      <span class="footer-pill">Windows</span>
+      <span class="footer-pill">MS Office</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── STEPS DATA ──
+const steps = [
+  { n:"01", icon:"🔍", color:"rgba(14,181,168,0.12)", colorSolid:"var(--teal)", title:"Diagnóstico y planificación", desc:"Analizamos el estado del equipo, revisamos el hardware instalado, medimos el rendimiento e identificamos qué necesitaba mejorarse.", tag:"Fase inicial" },
+  { n:"02", icon:"💽", color:"rgba(255,107,53,0.12)", colorSolid:"var(--orange)", title:"Cambio de HDD a SSD", desc:"Retiramos el disco duro mecánico y colocamos una unidad de estado sólido (SSD). Reinstalamos o clonamos el sistema operativo para aprovechar la velocidad.", tag:"Hardware" },
+  { n:"03", icon:"🧠", color:"rgba(132,94,194,0.12)", colorSolid:"var(--purple)", title:"Ampliación de RAM DDR3", desc:"Identificamos el slot libre en la placa base e instalamos el módulo adicional de 1GB DDR3, asegurándonos de que fuera compatible con la frecuencia existente.", tag:"Hardware" },
+  { n:"04", icon:"⚙️", color:"rgba(6,214,160,0.12)", colorSolid:"var(--green)", title:"Optimización de Windows", desc:"Limpiamos archivos temporales, desactivamos programas de inicio innecesarios, actualizamos drivers y ajustamos las opciones de rendimiento visual.", tag:"Software" },
+  { n:"05", icon:"📄", color:"rgba(255,107,53,0.12)", colorSolid:"var(--orange)", title:"Instalación de Microsoft Office 2016", desc:"Instalamos el paquete completo de Microsoft Office y verificamos el correcto funcionamiento de Word, Excel y PowerPoint en el sistema ya optimizado.", tag:"Software" },
+  { n:"06", icon:"✅", color:"rgba(14,181,168,0.12)", colorSolid:"var(--teal)", title:"Pruebas y verificación final", desc:"Ejecutamos pruebas de rendimiento comparativas, verificamos la estabilidad del sistema y documentamos todos los resultados obtenidos.", tag:"Control de calidad" },
+];
+
+const stepsGrid = document.getElementById('stepsGrid');
+steps.forEach((s,i) => {
+  const d = document.createElement('div');
+  d.className = 'step-card reveal' + (i%3===0?'':i%3===1?' reveal-delay-1':' reveal-delay-2');
+  d.innerHTML = `
+    <div class="step-num">${s.n}</div>
+    <div class="step-icon-wrap" style="background:${s.color}">${s.icon}</div>
+    <h3>${s.title}</h3>
+    <p>${s.desc}</p>
+    <span class="step-tag" style="background:${s.color};color:${s.colorSolid}">${s.tag}</span>
+  `;
+  stepsGrid.appendChild(d);
+});
+
+// ── GALLERY ──
+const galleryLabels = [
+  /*{emoji:"📸",text:"Equipo antes de intervención"},*/
+];
+const gg = document.getElementById('galleryGrid');
+galleryLabels.forEach((l,i) => {
+  const item = document.createElement('div');
+  item.className = 'gallery-item';
+  item.innerHTML = `
+    <input type="file" accept="image/*" onchange="loadImg(this,${i})">
+    <div class="upload-zone">
+      <div class="upload-emoji">${l.emoji}</div>
+      <div class="upload-text">${l.text}<br><span style="color:var(--teal);font-size:11px;font-weight:800">+ Subir foto</span></div>
+    </div>
+    <img id="prev-${i}" src="" alt="">
+    <div class="img-caption">${l.text}</div>
+  `;
+  gg.appendChild(item);
+});
+function loadImg(inp,i){
+  const f=inp.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    document.getElementById(`prev-${i}`).src=e.target.result;
+    inp.closest('.gallery-item').classList.add('has-image');
+  };
+  r.readAsDataURL(f);
+}
+
+// ── TEAM ──
+const members = [
+  {initial:"A",name:"Estudiante 1",role:"Hardware — SSD",color:"#0eb5a8"},
+  {initial:"B",name:"Estudiante 2",role:"Hardware — RAM",color:"#ff6b35"},
+  {initial:"C",name:"Estudiante 3",role:"Software — Windows",color:"#845ec2"},
+];
+// ↑ Cambia los nombres aquí
+
+const tg = document.getElementById('teamGrid');
+members.forEach(m=>{
+  const c=document.createElement('div');
+  c.className='team-card';
+  c.innerHTML=`
+    <div class="team-avatar" style="background:${m.color}">${m.initial}</div>
+    <div class="team-name">${m.name}</div>
+    <div class="team-role">${m.role}</div>
+  `;
+  tg.appendChild(c);
+});
+
+// ── SCROLL REVEAL ──
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.meter-fill').forEach(b=>{ b.style.width=b.dataset.w; });
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
