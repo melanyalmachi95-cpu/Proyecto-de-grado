@@ -384,9 +384,19 @@ nav {
 .team-card:hover { transform:translateY(-6px); }
 
 .team-avatar {
-  width:64px;height:64px;border-radius:20px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--d);font-size:26px;font-weight:900;color:#fff;
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid var(--border);
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+.team-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 .team-name { font-family:var(--d);font-size:17px;font-weight:900;color:var(--text); }
 .team-role { font-size:13px;font-weight:700;color:var(--muted);line-height:1.4; }
@@ -825,24 +835,28 @@ function loadImg(inp,i){
 
 // ── TEAM ──
 const members = [
-  {initial:"A",name:"Estudiante 1",role:"Hardware — SSD",color:"#0eb5a8"},
-  {initial:"B",name:"Estudiante 2",role:"Hardware — RAM",color:"#ff6b35"},
-  {initial:"C",name:"Estudiante 3",role:"Software — Windows",color:"#845ec2"},
+  {initial:"A",name:"Anthony Simbaña",role:"Hardware — SSD",color:"#0eb5a8",image:"imagenes/yoi.jpeg"},
+  {initial:"B",name:"Johana Taday",role:"Hardware — RAM",color:"#ff6b35",image:"imagenes/joi.jpeg"},
+  {initial:"C",name:"Paola Taday",role:"Software — Windows",color:"#845ec2",image:"imagenes/poi.jpeg"},
 ];
 // ↑ Cambia los nombres aquí
 
 const tg = document.getElementById('teamGrid');
+
 members.forEach(m=>{
-  const c=document.createElement('div');
-  c.className='team-card';
-  c.innerHTML=`
-    <div class="team-avatar" style="background:${m.color}">${m.initial}</div>
+  const c = document.createElement('div');
+  c.className = 'team-card';
+
+  c.innerHTML = `
+    <div class="team-avatar">
+      <img src="${m.image}" alt="${m.name}">
+    </div>
     <div class="team-name">${m.name}</div>
     <div class="team-role">${m.role}</div>
   `;
+
   tg.appendChild(c);
 });
-
 // ── SCROLL REVEAL ──
 const obs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{
